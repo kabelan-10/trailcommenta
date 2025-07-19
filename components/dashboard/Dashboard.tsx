@@ -115,7 +115,7 @@ export default function Dashboard({
         return (
           <ProjectSettings
             project={selectedProject}
-            onBack={() => setCurrentView("dashboard")}
+            // onBack={() => setCurrentView("dashboard")}
           />
         );
       case "knowledge-base":
@@ -146,15 +146,15 @@ export default function Dashboard({
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar
-        selectedProject={selectedProject}
+      {/* <Sidebar
+        // selectedProject={selectedProject}
         expandedProject={expandedProject}
         currentView={currentView}
         onProjectSelect={handleProjectSelect}
         onViewChange={(view: string) => setCurrentView(view as any)}
         onCreateProject={() => setCurrentView("create-project")}
         onExpandProject={setExpandedProject}
-      />
+      /> */}
       <div className="flex-1 flex flex-col">
         <AppHeader
           user={user}
