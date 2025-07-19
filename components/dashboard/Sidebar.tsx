@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Plus,
   ChevronDown,
@@ -15,33 +17,29 @@ import { cn } from "@/lib/utils";
 import { Project, apiService } from "@/lib/api";
 import { toast } from "sonner";
 
-interface SidebarProps {
-  selectedProject: Project | null;
-  expandedProject: string | null;
-  currentView: string;
-  onProjectSelect: (project: Project) => void;
-  onViewChange: (view: string) => void;
-  onCreateProject: () => void;
-  onExpandProject: (projectId: string | null) => void;
-}
-
-export default function Sidebar({
-  selectedProject,
-  expandedProject,
-  currentView,
-  onProjectSelect,
-  onViewChange,
-  onCreateProject,
-  onExpandProject,
-}: SidebarProps) {
+export default function Sidebar() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [projectsExpanded, setProjectsExpanded] = useState(true);
+  const [expandedProject, setExpandedProject] = useState<string | null>(null);
+  
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+  
+  const currentProjectId = params.projectId as string;
 
   // Fetch projects on component mount
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  // Auto-expand current project
+  useEffect(() => {
+    if (currentProjectId && projects.length > 0) {
+      setExpandedProject(currentProjectId);
+    }
+  }, [currentProjectId, projects]);
 
   // Auto-refresh projects every 30 seconds
   useEffect(() => {
@@ -85,64 +83,52 @@ export default function Sidebar({
     }
   };
 
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
+
+  const isProjectActive = (projectId: string, subPath?: string) => {
+    if (subPath) {
+      return pathname === `/projects/${projectId}/${subPath}`;
+    }
+    return pathname === `/projects/${projectId}`;
+  };
+
   const ProjectSubsections = ({ project }: { project: Project }) => (
     <div className="ml-6 space-y-1">
-      <button
-        onClick={() => {
-          onProjectSelect(project);
-          onViewChange("dashboard");
-        }}
+      <Link
+        href={`/projects/${project.id}`}
         className={cn(
-          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
-          selectedProject?.id === project.id && currentView === "dashboard"
+          "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+          isProjectActive(project.id)
             ? "bg-blue-100 text-blue-700"
             : "text-gray-600 hover:bg-gray-100"
         )}
       >
         - Dashboard
-      </button>
-      <button
-        onClick={() => {
-          onProjectSelect(project);
-          onViewChange("keywords");
-        }}
+      </Link>
+      <Link
+        href={`/projects/${project.id}/keywords`}
         className={cn(
-          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
-          selectedProject?.id === project.id && currentView === "keywords"
+          "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+          isProjectActive(project.id, "keywords")
             ? "bg-blue-100 text-blue-700"
             : "text-gray-600 hover:bg-gray-100"
         )}
       >
         - Keywords
-      </button>
-      <button
-        onClick={() => {
-          onProjectSelect(project);
-          onViewChange("subreddits");
-        }}
+      </Link>
+      <Link
+        href={`/projects/${project.id}/subreddits`}
         className={cn(
-          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
-          selectedProject?.id === project.id && currentView === "subreddits"
+          "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+          isProjectActive(project.id, "subreddits")
             ? "bg-blue-100 text-blue-700"
             : "text-gray-600 hover:bg-gray-100"
         )}
       >
         - Subreddits
-      </button>
-      <button
-        onClick={() => {
-          onProjectSelect(project);
-          onViewChange("settings");
-        }}
-        className={cn(
-          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
-          selectedProject?.id === project.id && currentView === "settings"
-            ? "bg-blue-100 text-blue-700"
-            : "text-gray-600 hover:bg-gray-100"
-        )}
-      >
-        - Settings
-      </button>
+      </Link>
     </div>
   );
 
@@ -165,17 +151,15 @@ export default function Sidebar({
         {/* Projects Section */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <button
-              onClick={() => {
-                setProjectsExpanded(!projectsExpanded);
-                onViewChange("projects");
-              }}
+            <Link
+              href="/projects"
               className={cn(
                 "flex items-center px-3 py-2 text-sm rounded-md transition-colors flex-1",
-                currentView === "projects"
+                isActive("/projects")
                   ? "bg-blue-100 text-blue-700"
                   : "text-gray-600 hover:bg-gray-100"
               )}
+              onClick={() => setProjectsExpanded(!projectsExpanded)}
             >
               {projectsExpanded ? (
                 <ChevronDown className="mr-2 h-4 w-4" />
@@ -184,9 +168,9 @@ export default function Sidebar({
               )}
               <FolderOpen className="mr-2 h-4 w-4" />
               Projects ({projects.length})
-            </button>
+            </Link>
             <Button
-              onClick={onCreateProject}
+              onClick={() => router.push("/projects/create")}
               size="sm"
               variant="ghost"
               className="h-8 w-8 p-0"
@@ -209,7 +193,7 @@ export default function Sidebar({
                     <div className="flex items-center group">
                       <button
                         onClick={() => {
-                          onExpandProject(
+                          setExpandedProject(
                             expandedProject === project.id ? null : project.id
                           );
                         }}
@@ -236,7 +220,7 @@ export default function Sidebar({
                 <div className="text-center py-4">
                   <p className="text-sm text-gray-500 mb-2">No projects yet</p>
                   <Button
-                    onClick={onCreateProject}
+                    onClick={() => router.push("/projects/create")}
                     size="sm"
                     variant="outline"
                     className="text-xs"
@@ -251,30 +235,30 @@ export default function Sidebar({
 
         {/* Always Visible Sections at Bottom */}
         <div className="space-y-2 pt-4 border-t border-gray-200 mt-auto">
-          <button
-            onClick={() => onViewChange("knowledge-base")}
+          <Link
+            href="/knowledgebase"
             className={cn(
               "w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors",
-              currentView === "knowledge-base"
+              isActive("/knowledgebase")
                 ? "bg-blue-100 text-blue-700"
                 : "text-gray-600 hover:bg-gray-100"
             )}
           >
             <Book className="mr-2 h-4 w-4" />
             Knowledge Base
-          </button>
-          <button
-            onClick={() => onViewChange("accounts")}
+          </Link>
+          <Link
+            href="/accounts"
             className={cn(
               "w-full flex items-center px-3 py-2 text-sm rounded-md transition-colors",
-              currentView === "accounts"
+              isActive("/accounts")
                 ? "bg-blue-100 text-blue-700"
                 : "text-gray-600 hover:bg-gray-100"
             )}
           >
             <Users className="mr-2 h-4 w-4" />
             Accounts
-          </button>
+          </Link>
         </div>
       </div>
     </div>
