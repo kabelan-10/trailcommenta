@@ -19,7 +19,8 @@
 -                  >
 +                  <Link to={`/projects/${project.id}`} className="block">
                      <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors">
-                       {project.name}
+                   
+}    {project.name}
                      </h3>
 @@ .. @@
                        <span className="text-sm text-gray-500">Keywords: {project.keywords.length}</span>

@@ -18,7 +18,9 @@
 +  
 +  // If user is already logged in, redirect to intended destination
 +  if (user) {
-+    return <Navigate to={from} replace />;
++    return <Navigate to={f
+  }
+}rom} replace />;
 +  }
  
    const handleSubmit = async (e: React.FormEvent) => {
