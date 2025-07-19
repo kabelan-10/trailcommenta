@@ -8,10 +8,10 @@ import ProjectDashboard from "@/components/dashboard/ProjectDashboard";
 import { apiService, Project } from "@/lib/api";
 
 // Required for static export
-export async function generateStaticParams() {
-  // Return empty array for static export - pages will be generated on demand
-  return [];
-}
+// export async function generateStaticParams() {
+//   // Return empty array for static export - pages will be generated on demand
+//   return [];
+// }
 
 export default function ProjectDashboardPage() {
   const params = useParams();
@@ -22,12 +22,14 @@ export default function ProjectDashboardPage() {
   useEffect(() => {
     const fetchProject = async () => {
       if (!projectId) return;
-      
+
       try {
         // Get project details from the projects list
         const response = await apiService.getProjects();
         if (response.success && response.data) {
-          const foundProject = response.data.data.find((p: Project) => p.id === projectId);
+          const foundProject = response.data.data.find(
+            (p: Project) => p.id === projectId
+          );
           setProject(foundProject || null);
         }
       } catch (error) {

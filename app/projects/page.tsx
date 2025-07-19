@@ -4,7 +4,10 @@ import { useAuth } from "@/hooks/use-auth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Layout from "@/components/Layout";
 import ProjectsList from "@/components/dashboard/ProjectsList";
-
+// export async function generateStaticParams() {
+//   // Your static generation logic
+//   return [];
+// }
 export default function ProjectsPage() {
   return (
     <ProtectedRoute>
