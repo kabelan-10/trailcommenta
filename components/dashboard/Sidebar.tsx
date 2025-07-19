@@ -22,11 +22,11 @@ export default function Sidebar() {
   const [isLoading, setIsLoading] = useState(true);
   const [projectsExpanded, setProjectsExpanded] = useState(true);
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
-  
+
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
-  
+
   const currentProjectId = params.projectId as string;
 
   // Fetch projects on component mount
@@ -128,6 +128,17 @@ export default function Sidebar() {
         )}
       >
         - Subreddits
+      </Link>
+      <Link
+        href={`/projects/${project.id}/settings`}
+        className={cn(
+          "block w-full text-left px-3 py-2 text-sm rounded-md transition-colors",
+          isProjectActive(project.id, "subreddits")
+            ? "bg-blue-100 text-blue-700"
+            : "text-gray-600 hover:bg-gray-100"
+        )}
+      >
+        - Settings
       </Link>
     </div>
   );

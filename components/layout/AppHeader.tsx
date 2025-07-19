@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User, Settings, LogOut, Menu } from "lucide-react";
+import Link from "next/link";
 
 interface User {
   name: string;
@@ -35,6 +36,12 @@ export default function AppHeader({
   onLoginClick,
   onRegisterClick,
 }: AppHeaderProps) {
+  const handlelogout = () => {
+    if (onLogout) {
+      onLogout();
+      <Link href={`/login`}></Link>;
+    }
+  };
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
       <div className="flex items-center justify-between">
@@ -102,7 +109,7 @@ export default function AppHeader({
                   )}
                   <DropdownMenuSeparator />
                   {onLogout && (
-                    <DropdownMenuItem onClick={onLogout}>
+                    <DropdownMenuItem onClick={handlelogout}>
                       <LogOut className="mr-2 h-4 w-4" />
                       Log out
                     </DropdownMenuItem>

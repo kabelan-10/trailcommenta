@@ -177,6 +177,7 @@ export default function KeywordsPage({ project }: KeywordsPageProps) {
   };
 
   const handleDeleteKeywords = async () => {
+    console.log("Delete keywords:", deleteKeywords);
     if (!project?.id || deleteKeywords.length === 0) {
       toast.error("Please select keywords to delete");
       return;

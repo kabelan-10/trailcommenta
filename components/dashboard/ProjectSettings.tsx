@@ -19,16 +19,24 @@ import {
   Project,
 } from "@/lib/api";
 import { toast } from "sonner";
-
+// import router from "next/router";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 interface ProjectSettingsProps {
   project: Project | null;
-  onBack: () => void;
+  // onBack?: () => void;
 }
 
 export default function ProjectSettings({
   project,
-  onBack,
-}: ProjectSettingsProps) {
+}: // onBack,
+ProjectSettingsProps) {
+  const router = useRouter();
+  const handleback = () => {
+    console.log("🔙 Navigating back to projects list");
+    // <Link href={`/projects/${projectId}/`}></Link>;
+    router.push(`/projects/${project?.id || ""}`);
+  };
   const [formData, setFormData] = useState<ProjectSettingsType>({
     name: "",
     prod_exp: "",
@@ -40,7 +48,7 @@ export default function ProjectSettings({
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [errors, setErrors] = useState<Partial<ProjectSettingsType>>({});
-
+  const [projectId, setProjectId] = useState<string | null>(null);
   // Fetch project settings on component mount
   useEffect(() => {
     if (project?.id) {
@@ -58,6 +66,7 @@ export default function ProjectSettings({
     try {
       const response = await apiService.getProjectSettings(project.id);
       console.log("Fetched project settings response:", response.data.data);
+      setProjectId(project.id);
       if (response.success && response.data) {
         setFormData(response.data.data);
       } else {
@@ -66,14 +75,14 @@ export default function ProjectSettings({
           response.message?.includes("unauthorized")
         ) {
           toast.error("Project not found or you are not authorized to view it");
-          onBack();
+          // onBack();
         } else {
           toast.error(response.message || "Failed to fetch project settings");
         }
       }
     } catch (error) {
       toast.error("Failed to fetch project settings");
-      onBack();
+      // onBack();
     } finally {
       setIsLoading(false);
     }
@@ -171,7 +180,7 @@ export default function ProjectSettings({
           <p className="text-gray-600">
             Select a project to view its settings.
           </p>
-          <Button onClick={onBack} className="mt-4">
+          <Button onClick={handleback} className="mt-4">
             Back to Projects
           </Button>
         </div>
@@ -185,7 +194,7 @@ export default function ProjectSettings({
         <div className="mb-6">
           <Button
             variant="ghost"
-            onClick={onBack}
+            onClick={handleback}
             className="flex items-center"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -206,7 +215,11 @@ export default function ProjectSettings({
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <div className="mb-6">
-        <Button variant="ghost" onClick={onBack} className="flex items-center">
+        <Button
+          variant="ghost"
+          onClick={handleback}
+          className="flex items-center"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Dashboard
         </Button>
