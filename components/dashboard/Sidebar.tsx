@@ -61,10 +61,10 @@ export default function Sidebar() {
       if (response.success && response.data) {
         console.log(
           "✅ Projects loaded successfully:",
-          response.data.length,
+          response.data.data?.length || 0,
           "projects"
         );
-        setProjects(response.data.data);
+        setProjects(response.data.data || []);
         console.log(projects);
       } else {
         console.error("❌ Failed to fetch projects:", response.message);

@@ -7,6 +7,12 @@ import Layout from "@/components/Layout";
 import SubredditsPage from "@/components/dashboard/SubredditsPage";
 import { apiService, Project } from "@/lib/api";
 
+// Required for static export
+export async function generateStaticParams() {
+  // Return empty array for static export - pages will be generated on demand
+  return [];
+}
+
 export default function ProjectSubredditsPage() {
   const params = useParams();
   const projectId = params.projectId as string;
