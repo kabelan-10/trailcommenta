@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -97,7 +98,12 @@ export default function ProjectsList({
 
   // Debounce search term to avoid too many API calls
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
-
+  const router = useRouter();
+  useEffect(() => {
+    if (projects.length === 0) {
+      router.push("/projects/create"); // or wherever you want to redirect
+    }
+  }, [projects]);
   // Fetch projects with pagination
   const fetchProjects = useCallback(
     async (params?: Partial<PaginationParams>) => {
@@ -472,7 +478,7 @@ export default function ProjectsList({
       </div>
 
       {/* Search and Filters */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Search and Filter Projects</CardTitle>
           <CardDescription>Find and sort your projects</CardDescription>
@@ -519,7 +525,7 @@ export default function ProjectsList({
             </div>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Projects Table */}
       <Card>
@@ -597,7 +603,7 @@ export default function ProjectsList({
                         <div className="flex items-center space-x-2">
                           <span>{project.name}</span>
                           <Badge variant="secondary" className="text-xs">
-                            {project.person_role || "Member"}
+                            {project.name || "Member"}
                           </Badge>
                         </div>
                       </TableCell>

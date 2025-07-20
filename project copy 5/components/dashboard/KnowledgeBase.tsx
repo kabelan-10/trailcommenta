@@ -862,7 +862,7 @@ export default function KnowledgeBase() {
       )}
 
       {/* Search and Filters */}
-      {entries.length > 0 && (
+      {/* {entries.length > 0 && (
         <Card>
           <CardHeader>
             <CardTitle>Search Knowledge Base</CardTitle>
@@ -896,11 +896,11 @@ export default function KnowledgeBase() {
             </div>
           </CardContent>
         </Card>
-      )}
+      )} */}
       {entries.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Analytics Cards */}
-          <Card>
+          {/* <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Total Entries
@@ -943,7 +943,7 @@ export default function KnowledgeBase() {
                 {debouncedSearchTerm ? "Matching entries" : "All entries"}
               </p>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       )}
       {entries.length > 0 && (

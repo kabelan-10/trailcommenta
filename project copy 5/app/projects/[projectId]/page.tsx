@@ -6,7 +6,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import Layout from "@/components/Layout";
 import ProjectDashboard from "@/components/dashboard/ProjectDashboard";
 import { apiService, Project } from "@/lib/api";
-
 // Required for static export
 // export async function generateStaticParams() {
 //   // Return empty array for static export - pages will be generated on demand
@@ -18,7 +17,6 @@ export default function ProjectDashboardPage() {
   const projectId = params.projectId as string;
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchProject = async () => {
       if (!projectId) return;
@@ -30,6 +28,7 @@ export default function ProjectDashboardPage() {
           const foundProject = response.data.data.find(
             (p: Project) => p.id === projectId
           );
+
           setProject(foundProject || null);
         }
       } catch (error) {

@@ -22,16 +22,19 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  
+
   const { user, login, isLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  
-  const timeZone = typeof window !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : 'UTC';
-  
+
+  const timeZone =
+    typeof window !== "undefined"
+      ? Intl.DateTimeFormat().resolvedOptions().timeZone
+      : "UTC";
+
   // Get the intended destination from URL params, default to /projects
-  const from = searchParams.get('from') || '/projects';
-  
+  const from = searchParams.get("from") || "/projects";
+
   // If user is already logged in, redirect to intended destination
   useEffect(() => {
     if (user && !isLoading) {
@@ -41,7 +44,7 @@ export default function LoginPage() {
 
   // Handle OAuth callback
   useEffect(() => {
-    const code = searchParams.get('code');
+    const code = searchParams.get("code");
     if (code) {
       handleGoogleCallback(code);
     }
@@ -79,7 +82,7 @@ export default function LoginPage() {
     setIsGoogleLoading(true);
     try {
       const result = await authService.initiateGoogleAuth();
-
+      console.log(result);
       if (result.success && result.url) {
         window.location.href = result.url;
       } else {
@@ -141,11 +144,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isSubmitting}
-            >
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

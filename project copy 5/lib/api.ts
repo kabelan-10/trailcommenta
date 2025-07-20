@@ -1,6 +1,6 @@
 import { authService } from './auth';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.43.144:8000';
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -71,10 +71,11 @@ interface Project {
   id: string;
   name: string;
   product_link: string;
-  product_explanation: string;
-  person_name: string;
-  person_role: string;
-  person_story: string;
+  person_name:string;
+  audiance: string;
+  problem: string;
+  solution: string;
+  // person_story: string;
   total_subreddits: number;
   total_mentions: number;
   created_at: string;
@@ -83,19 +84,19 @@ interface Project {
 interface CreateProjectData {
   name: string;
   product_link: string;
-  product_explanation: string;
-  person_name: string;
-  person_role: string;
-  person_story: string;
+  audiance: string;
+  problem: string;
+  solution: string;
+  // person_story: string;
 }
 
 interface ProjectSettings {
   name: string;
-  prod_exp: string;
+  solution: string;
   prod_url: string;
-  pers_name: string;
-  pers_role: string;
-  pers_story: string;
+  audiance: string;
+  problem: string;
+  // pers_story: string;
 }
 
 interface PaginationParams {
@@ -239,7 +240,7 @@ class CacheManager {
       timestamp: Date.now(),
       ttl: ttlMinutes * 60 * 1000
     });
-    }
+    }  
   getProjectSettings(key: string) {
     const cached = this.projectSettingsCache.get(key);
     if (!cached) return null;
@@ -712,6 +713,44 @@ class ApiService {
     });
   }
 
+  // async generateExplain(data: any): Promise<any> {
+  //   return this.makeRequest<{ comment: string }>('/proj_exp_gen', {
+  //     method: 'GET',
+  //     body: JSON.stringify(data),
+  //   });
+  // }
+
+  async generateExplain(params: any): Promise<any> {
+    // Check cache first
+    console.log("asdasd" , params);
+    
+    const queryParams = new URLSearchParams();
+    
+    // if (params?.page) queryParams.append('page', params.page.toString());
+    // if (params?.limit) queryParams.append('limit', params.limit.toString());
+    // if (params?.search) queryParams.append('search', params.search);
+    // if (params?.sortBy) queryParams.append('sortBy', params.sortBy);
+    // if (params?.sortOrder) queryParams.append('sortOrder', params.sortOrder);
+    // queryParams.append(params.product_link);
+    queryParams.append('url' ,params.product_link )
+    console.log("ASDASDSADASDASD" , params.product_link);
+    const queryString = queryParams.toString();
+    const endpoint = `/proj_exp_gen?${queryString}`
+    
+    const response = await this.makeRequest<Project[]>(endpoint);
+    
+    // Cache successful responses
+    // if (response.success && response.data) {
+    //   cacheManager.setProjects(cacheKey, {
+    //     data: response.data,
+    //     pagination: response.pagination
+    //   });
+      
+    // }
+    
+    return response;
+  }
+   
   // Knowledge Base APIs
   async getKnowledgeBase(params?: PaginationParams): Promise<ApiResponse<any>> {
     const queryParams = new URLSearchParams();

@@ -39,11 +39,11 @@ ProjectSettingsProps) {
   };
   const [formData, setFormData] = useState<ProjectSettingsType>({
     name: "",
-    prod_exp: "",
+    // prod_exp: "",
     prod_url: "",
-    pers_name: "",
-    pers_role: "",
-    pers_story: "",
+    solution: "",
+    audiance: "",
+    problem: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -105,21 +105,21 @@ ProjectSettingsProps) {
       }
     }
 
-    if (!formData.prod_exp.trim()) {
-      newErrors.prod_exp = "Product explanation is required";
+    if (!formData.solution.trim()) {
+      newErrors.audiance = "Product explanation is required";
     }
 
-    if (!formData.pers_name.trim()) {
-      newErrors.pers_name = "Person name is required";
+    if (!formData.problem.trim()) {
+      newErrors.problem = "Person name is required";
     }
 
-    if (!formData.pers_role.trim()) {
-      newErrors.pers_role = "Person role is required";
+    if (!formData.audiance.trim()) {
+      newErrors.solution = "Person role is required";
     }
 
-    if (!formData.pers_story.trim()) {
-      newErrors.pers_story = "Person story is required";
-    }
+    // if (!formData.pers_story.trim()) {
+    //   newErrors.pers_story = "Person story is required";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -272,23 +272,23 @@ ProjectSettingsProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="prod_exp">Product Explanation *</Label>
+              <Label htmlFor="audiance">Product Explanation *</Label>
               <Textarea
-                id="prod_exp"
+                id="audiance"
                 placeholder="Describe your product and what it does"
-                value={formData.prod_exp}
+                value={formData.audiance}
                 // onChange={(e) => handleInputChange("prod_exp", e.target.value)}
                 disabled={isSaving}
                 rows={4}
-                className={errors.prod_exp ? "border-red-500" : ""}
+                className={errors.audiance ? "border-red-500" : ""}
                 readOnly
               />
-              {errors.prod_exp && (
-                <p className="text-sm text-red-600">{errors.prod_exp}</p>
+              {errors.audiance && (
+                <p className="text-sm text-red-600">{errors.audiance}</p>
               )}
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="pers_name">Person Name *</Label>
               <Input
                 id="pers_name"
@@ -303,41 +303,41 @@ ProjectSettingsProps) {
               {errors.pers_name && (
                 <p className="text-sm text-red-600">{errors.pers_name}</p>
               )}
-            </div>
+            </div> */}
 
             <div className="space-y-2">
-              <Label htmlFor="pers_role">Person Role *</Label>
-              <Input
-                id="pers_role"
-                type="text"
+              <Label htmlFor="problem">Problem *</Label>
+              <Textarea
+                id="problem"
+                rows={4}
                 placeholder="e.g., Founder, Product Manager, Developer"
-                value={formData.pers_role}
+                value={formData.problem}
                 // onChange={(e) => handleInputChange("pers_role", e.target.value)}
                 disabled={isSaving}
-                className={errors.pers_role ? "border-red-500" : ""}
+                className={errors.problem ? "border-red-500" : ""}
                 readOnly
               />
-              {errors.pers_role && (
-                <p className="text-sm text-red-600">{errors.pers_role}</p>
+              {errors.problem && (
+                <p className="text-sm text-red-600">{errors.problem}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="pers_story">Person Story *</Label>
+              <Label htmlFor="solution">Solution *</Label>
               <Textarea
-                id="pers_story"
+                id="solution"
                 placeholder="Tell us about your background and experience with this project"
-                value={formData.pers_story}
+                value={formData.solution}
                 // onChange={(e) =>
                 //   handleInputChange("pers_story", e.target.value)
                 // }
                 disabled={isSaving}
                 rows={4}
-                className={errors.pers_story ? "border-red-500" : ""}
+                className={errors.solution ? "border-red-500" : ""}
                 readOnly
               />
-              {errors.pers_story && (
-                <p className="text-sm text-red-600">{errors.pers_story}</p>
+              {errors.solution && (
+                <p className="text-sm text-red-600">{errors.solution}</p>
               )}
             </div>
             {/* Save change button */}

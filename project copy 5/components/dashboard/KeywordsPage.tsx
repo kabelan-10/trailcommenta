@@ -368,7 +368,7 @@ export default function KeywordsPage({ project }: KeywordsPageProps) {
       </div>
 
       {/* Search and Filters */}
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Search Keywords</CardTitle>
           <CardDescription>
@@ -402,7 +402,7 @@ export default function KeywordsPage({ project }: KeywordsPageProps) {
             </Select>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       {/* Keywords List */}
       <Card>
@@ -469,15 +469,15 @@ export default function KeywordsPage({ project }: KeywordsPageProps) {
                         <h3 className="font-semibold text-gray-900">
                           {keyword}
                         </h3>
-                        <p className="text-sm text-gray-500">
+                        {/* <p className="text-sm text-gray-500">
                           {keyword.length} characters
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="text-xs">
+                      {/* <Badge variant="outline" className="text-xs">
                         Active
-                      </Badge>
+                      </Badge> */}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="sm">
@@ -515,7 +515,7 @@ export default function KeywordsPage({ project }: KeywordsPageProps) {
       </Card>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -567,7 +567,7 @@ export default function KeywordsPage({ project }: KeywordsPageProps) {
             <p className="text-xs text-muted-foreground">Characters</p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -598,7 +598,7 @@ export default function SubredditsPage({ project }: SubredditsPageProps) {
       </Card>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -642,7 +642,7 @@ export default function SubredditsPage({ project }: SubredditsPageProps) {
             <p className="text-xs text-muted-foreground">Auto-generated</p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog

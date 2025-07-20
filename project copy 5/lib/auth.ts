@@ -1,11 +1,10 @@
 import Cookies from 'js-cookie';
 import { toast } from 'sonner';
-
 export interface User {
   user_id: string;
   name: string;
   email: string;
-  picture?: string;
+  picture?: string; 
 }
 
 export interface AuthResponse {
@@ -18,7 +17,7 @@ export interface AuthResponse {
 }
 
 class AuthService {
-  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+  private baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://192.168.43.144:8000';
   private tokenKey = 'auth_token';
   private userKey = 'user_data';
 
@@ -44,7 +43,7 @@ class AuthService {
       });
 
       const data = await response.json();
-  
+      
       if (data.token) {
           // Store token in secure cookies
           Cookies.set(this.tokenKey, data.token, this.getCookieOptions());
@@ -59,7 +58,7 @@ class AuthService {
 
           // Store token expiration (exp) in cookies
           Cookies.set("token_expiry", data.exp, this.getCookieOptions());
-
+          console.log("All Cookies:", Cookies.get());
           return {
             success: true,
             message: 'Login successful',
@@ -91,6 +90,68 @@ class AuthService {
       };
     }
   }
+   async loginGoogle(data : any): Promise<AuthResponse> {
+    try {
+      // const response = await fetch(`${this.baseUrl}/auth/manual_auth`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ email, password , timezone }),
+      //   credentials: 'include', // Include cookies in requests
+      // });
+
+      // const data = await response.json();
+      console.log("Google",data);
+      if (data.token) {
+          // Store token in secure cookies
+          Cookies.set(this.tokenKey, data.token, this.getCookieOptions());
+          console.log("All Cookies:", Cookies.get());
+
+          console.log("------------------------,",data.token );
+          // Store user info in cookies 
+          Cookies.set(this.userKey, JSON.stringify({
+            user_id: data.user_id,
+            email: data.email,
+            name: data.name,
+            picture: data.picture,
+          }), this.getCookieOptions());
+
+          // Store token expiration (exp) in cookies
+          Cookies.set("token_expiry", data.exp, this.getCookieOptions());
+          
+          return {
+            success: true,
+            message: 'Login successful',
+            user: {
+              user_id: data.user_id,
+              name: data.name,
+              email: data.email,
+              picture: data.picture
+            },
+            token: data.token
+          };
+      } else if (data.message === "verification_email_sent") {
+        return {
+          success: false,
+          message: "Please verify your email before logging in. Check your inbox for the verification link.",
+          requiresVerification: true,
+          email: data.email
+        };
+      } else {
+        return {
+          success: false,
+          message: data.message || 'Login failed'
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Network error. Please check your connection.',
+      };
+    }
+  }
+
 
   // async register(name: string, email: string, password: string): Promise<AuthResponse> {
   //   try {
@@ -129,30 +190,34 @@ class AuthService {
         message: 'No authentication token found',
       };
     }
-
-    try {
-      const response = await fetch(`${this.baseUrl}/auth/verify`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // Include cookies in requests
-      });
-
-      const data = await response.json();
-      if (!data.success) {
-        this.logout();
-      }
-
-      return data;
-    } catch (error) {
-      this.logout();
-      return {
-        success: false,
-        message: 'Failed to verify authentication',
-      };
+    return {
+      success:true,
+      message:"Token is valid"
     }
+    // try {
+    //   const response = await fetch(`${this.baseUrl}/auth/verify`, {
+    //     method: 'GET',
+    //     headers: {
+    //       'Authorization': `Bearer ${token}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //     credentials: 'include', // Include cookies in requests
+    //   });
+
+    //   const data = await response.json();
+    //   console.log("**********************************",data);
+    //   if (!data.success) {
+    //     this.logout();
+    //   }
+
+    //   return data;
+    // } catch (error) {
+    //   this.logout();
+    //   return {
+    //     success: false,
+    //     message: 'Failed to verify authentication',
+    //   };
+    // }
   }
 
   logout(): void {
@@ -172,8 +237,10 @@ class AuthService {
   }
 
   getToken(): string | null {
-    return Cookies.get(this.tokenKey) || null;
-  }
+  console.log("asdasds"  , this.tokenKey);
+  return Cookies.get(this.tokenKey) || null;
+}
+
 
    // Check if token is expired based on backend exp time
   isTokenExpired(): boolean {
@@ -283,6 +350,7 @@ class AuthService {
       });
 
       const data = await response.json();
+      console.log(data);
       
       if (response.ok && data.url) {
         return {

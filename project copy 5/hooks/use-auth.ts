@@ -78,9 +78,9 @@ export function useAuth() {
     const result = await authService.login(email, password , timezone);
     console.log("Login response:--::--::", result);
     // console.log("Login response:", result.user_id);
-    const uservar = { user_id: result.user!.user_id, name: result.user!.name, email: result.user!.email, picture: result.user!.picture };
-    console.log("User object:", uservar);
     if (result.success) {
+      const uservar = { user_id: result.user!.user_id, name: result.user!.name, email: result.user!.email, picture: result.user!.picture };
+      console.log("User object:", uservar);
       
       setUser(uservar);
       setIsAuthenticated(true);

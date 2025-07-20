@@ -28,6 +28,7 @@ import {
   EyeOff,
   Clock,
   TrendingUp,
+  Link,
 } from "lucide-react";
 import {
   Pagination,
@@ -537,7 +538,7 @@ export default function ProjectDashboard({ project }: ProjectDashboardProps) {
             Project Dashboard - Monitor and respond to relevant mentions
           </p>
         </div>
-        <div className="flex items-center space-x-2">
+        {/* <div className="flex items-center space-x-2">
           <Badge variant="secondary" className="flex items-center">
             <CheckCircle className="mr-1 h-3 w-3" />
             Active
@@ -558,11 +559,11 @@ export default function ProjectDashboard({ project }: ProjectDashboardProps) {
             )}
             <span className="ml-2 text-xs">Manual Refresh</span>
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Analytics Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -612,7 +613,7 @@ export default function ProjectDashboard({ project }: ProjectDashboardProps) {
             <p className="text-xs text-muted-foreground">Important</p>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
 
       {/* Mentions Management Tabs */}
       <Tabs
@@ -979,12 +980,12 @@ export default function ProjectDashboard({ project }: ProjectDashboardProps) {
                             <Calendar className="mr-1 h-3 w-3" />
                             {new Date(mention.time).toLocaleString()}
                           </div>
-                          <div className="flex items-center space-x-2">
+                          {/* <div className="flex items-center space-x-2">
                             <Badge variant="outline" className="text-xs">
                               Similarity:{" "}
                               {(mention.similarity * 100).toFixed(0)}%
                             </Badge>
-                          </div>
+                          </div> */}
                         </div>
                       </CardContent>
                     </Card>
